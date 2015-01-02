@@ -20,42 +20,44 @@ public class LoadHandler {
     public static final int TIME_ANIM_DURING = 300;
 
     private Builder builder;
+    private ObjectAnimator showAnim;
+    private ObjectAnimator hideAnim;
 
     public LoadHandler(Builder builder) {
         this.builder = builder;
     }
 
-    public void showProgress(){
+    public void showProgress() {
         visibleLayout(builder.progressLayout);
     }
 
-    public void showContent(){
+    public void showContent() {
         visibleLayout(builder.contentLayout);
     }
 
-    public void showEmpty(){
+    public void showEmpty() {
         visibleLayout(builder.emptyTextView);
     }
 
-    public void showError(){
+    public void showError() {
         visibleLayout(builder.errorTextView);
     }
 
-    private View getCurrentShow(){
+    private View getCurrentShow() {
         for (View view : builder.viewList) {
-            if(view.getVisibility() == View.VISIBLE){
+            if (view.getVisibility() == View.VISIBLE) {
                 return view;
             }
         }
         return null;
     }
 
-    private void visibleLayout(View targetView){
+    private void visibleLayout(View targetView) {
         View currentShowView = getCurrentShow();
         for (View view : builder.viewList) {
             if (view == targetView) {
                 animChanged(view, true);
-            }else{
+            } else {
                 if (view == currentShowView) {
                     animChanged(view, false);
                 }
@@ -63,16 +65,23 @@ public class LoadHandler {
         }
     }
 
-    private void animChanged(final View v, boolean show){
+    private void animChanged(final View v, boolean show) {
         if (show) {
+            if (showAnim != null) {
+                showAnim.cancel();
+            }
             v.setVisibility(View.VISIBLE);
-            ObjectAnimator alphaOA = ObjectAnimator.ofFloat(v, "alpha", 0, 1.0f);
-            alphaOA.setDuration(TIME_ANIM_DURING);
-            alphaOA.start();
+            showAnim = ObjectAnimator.ofFloat(v, "alpha", 0, 1.0f);
+            showAnim.setDuration(TIME_ANIM_DURING);
+            showAnim.start();
         } else {
-            ObjectAnimator alphaOA = ObjectAnimator.ofFloat(v, "alpha", 1.0f, 0);
-            alphaOA.setDuration(TIME_ANIM_DURING);
-            alphaOA.addListener(new Animator.AnimatorListener() {
+            if (hideAnim != null) {
+                hideAnim.cancel();
+                hideAnim.removeAllListeners();
+            }
+            hideAnim = ObjectAnimator.ofFloat(v, "alpha", 1.0f, 0);
+            hideAnim.setDuration(TIME_ANIM_DURING);
+            hideAnim.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
 
@@ -80,7 +89,9 @@ public class LoadHandler {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    v.setVisibility(View.GONE);
+                    if(getCurrentShow() != v){
+                        v.setVisibility(View.GONE);
+                    }
                 }
 
                 @Override
@@ -93,11 +104,11 @@ public class LoadHandler {
 
                 }
             });
-            alphaOA.start();
+            hideAnim.start();
         }
     }
 
-    public static Builder from(Context context){
+    public static Builder from(Context context) {
         return new Builder();
     }
 
@@ -148,7 +159,7 @@ public class LoadHandler {
             return this;
         }
 
-        public LoadHandler build(){
+        public LoadHandler build() {
             viewList = new ArrayList<>();
             addViewToList(contentLayout);
             addViewToList(progressLayout);
@@ -157,13 +168,12 @@ public class LoadHandler {
             return new LoadHandler(this);
         }
 
-        private void addViewToList(View v){
-            if(v != null){
+        private void addViewToList(View v) {
+            if (v != null) {
                 viewList.add(v);
             }
         }
     }
-
 
 
 }

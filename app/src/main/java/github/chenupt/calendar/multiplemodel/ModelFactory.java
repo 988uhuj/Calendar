@@ -42,7 +42,8 @@ public class ModelFactory {
      * @throws Exception
      */
     protected BaseItemModel newInstance(Context context, Class<?> owner) throws Exception {
-        return (BaseItemModel) owner.getConstructor(Context.class).newInstance(context);
+//        return (BaseItemModel) owner.getConstructor(Context.class).newInstance(context);
+        return (BaseItemModel) owner.getMethod("build", new Class[]{Context.class}).invoke(owner, context);
     }
 
     /**
