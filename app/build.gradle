@@ -1,4 +1,8 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+
+def AAVersion = '3.2'
+def appId = 'github.chenupt.calendar'
 
 
 def buildTime() {
@@ -16,11 +20,9 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "github.chenupt.calendar"
+        applicationId appId
         minSdkVersion 14
         targetSdkVersion 21
-//        versionCode 1
-//        versionName "1.0"
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         // 修改BuildConfig文件里的BUILD_TIME字段
@@ -39,8 +41,6 @@ android {
     }
 
     lintOptions {
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
         abortOnError false
     }
 
@@ -61,7 +61,18 @@ dependencies {
     compile 'com.github.johnpersano:supertoasts:1.3.4@aar'
     compile 'com.github.castorflex.smoothprogressbar:library:1.0.0'
     compile 'com.github.castorflex.smoothprogressbar:library-circular:1.0.2'
+
+    apt "org.androidannotations:androidannotations:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
 }
+
+apt {
+    arguments {
+        androidManifestFile variant.outputs[0].processResources.manifestFile
+        resourcePackageName appId
+    }
+}
+
 
 
 File propFile = file('signing.properties');
