@@ -26,7 +26,7 @@ public class MainActivity extends BaseActivity {
         show();
     }
 
-    @UiThread(delay = 3000)
+    @UiThread(delay = 5000)
     void show(){
         showContent();
     }

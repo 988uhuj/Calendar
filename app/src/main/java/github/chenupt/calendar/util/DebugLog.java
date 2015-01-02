@@ -40,6 +40,7 @@ public class DebugLog{
     private static String createLog( String log ) {
 
         StringBuffer buffer = new StringBuffer();
+        buffer.append("DebugLog");
         buffer.append("[");
         buffer.append(methodName);
         buffer.append(":");

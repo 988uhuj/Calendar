@@ -1,15 +1,14 @@
 package github.chenupt.calendar.activities;
 
-import android.animation.ObjectAnimator;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.EActivity;
 
 import github.chenupt.calendar.R;
+import github.chenupt.calendar.util.LoadHandler;
 
 /**
  * Created by chenupt@gmail.com on 2015/1/2.
@@ -23,6 +22,8 @@ public class BaseActivity extends ActionBarActivity {
     protected TextView baseEmptyTextView;
     protected TextView baseErrorTextView;
 
+    LoadHandler loadHandler;
+
     @Override
     public void setContentView(int layoutResID) {
         initLoadingView(layoutResID);
@@ -35,37 +36,29 @@ public class BaseActivity extends ActionBarActivity {
         baseEmptyTextView = (TextView) findViewById(R.id.base_empty);
         baseErrorTextView = (TextView) findViewById(R.id.base_error);
         LayoutInflater.from(this).inflate(layoutResID, baseContentLayout, true);
+
+        loadHandler = LoadHandler.from(this)
+                .setContentLayout(baseContentLayout)
+                .setEmptyTextView(baseEmptyTextView)
+                .setErrorTextView(baseErrorTextView)
+                .setProgressLayout(baseProgressLayout)
+                .build();
     }
 
     protected void showProgress(){
-        baseProgressLayout.setVisibility(View.VISIBLE);
-        baseContentLayout.setVisibility(View.GONE);
-        baseEmptyTextView.setVisibility(View.GONE);
-        baseErrorTextView.setVisibility(View.GONE);
+        loadHandler.showProgress();
     }
 
     protected void showContent(){
-        baseContentLayout.setVisibility(View.VISIBLE);
-        ObjectAnimator alphaOA = ObjectAnimator.ofFloat(baseContentLayout, "alpha", 0, 1.0f);
-        alphaOA.setDuration(300);
-        alphaOA.start();
-        baseProgressLayout.setVisibility(View.GONE);
-        baseEmptyTextView.setVisibility(View.GONE);
-        baseErrorTextView.setVisibility(View.GONE);
+        loadHandler.showContent();
     }
 
     protected void showEmpty(){
-        baseEmptyTextView.setVisibility(View.VISIBLE);
-        baseContentLayout.setVisibility(View.GONE);
-        baseProgressLayout.setVisibility(View.GONE);
-        baseErrorTextView.setVisibility(View.GONE);
+        loadHandler.showEmpty();
     }
 
     protected void showError(){
-        baseErrorTextView.setVisibility(View.VISIBLE);
-        baseContentLayout.setVisibility(View.GONE);
-        baseProgressLayout.setVisibility(View.GONE);
-        baseEmptyTextView.setVisibility(View.GONE);
+        loadHandler.showError();
     }
 
 }
