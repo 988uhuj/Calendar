@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 
 import github.chenupt.calendar.R;
 
@@ -14,6 +16,19 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+    }
+
+    @AfterViews
+    void afterViews(){
+        showProgress();
+        show();
+    }
+
+    @UiThread(delay = 3000)
+    void show(){
+        showContent();
     }
 
 
