@@ -1,6 +1,7 @@
 package github.chenupt.calendar.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -9,21 +10,23 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 
 import github.chenupt.calendar.R;
+import github.chenupt.calendar.fragments.DayListFragment_;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        enableShowProgress(false);
         super.onCreate(savedInstanceState);
-
-
     }
 
     @AfterViews
     void afterViews(){
-        showProgress();
-        show();
+//        showProgress();
+//        show();
+        Fragment fragment = DayListFragment_.builder().build();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
     }
 
     @UiThread(delay = 5000)
