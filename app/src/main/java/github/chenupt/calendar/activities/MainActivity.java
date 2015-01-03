@@ -1,5 +1,6 @@
 package github.chenupt.calendar.activities;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -33,7 +34,9 @@ public class MainActivity extends BaseActivity {
     @AfterViews
     void afterViews(){
         setSupportActionBar(toolbar);
-//        toolbar.setElevation(20f);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            toolbar.setElevation(20f);
+        }
         toolbar.setNavigationIcon(R.drawable.ic_menu);
 //        drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.common_text));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
