@@ -4,7 +4,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -13,6 +15,7 @@ import org.androidannotations.annotations.ViewById;
 import org.joda.time.DateTime;
 
 import github.chenupt.calendar.R;
+import github.chenupt.calendar.persistance.Note;
 
 /**
  * Created by chenupt@gmail.com on 2015/1/3.
@@ -25,6 +28,8 @@ public class NewNoteActivity extends BaseActivity {
     Toolbar toolbar;
     @ViewById(R.id.info_text)
     TextView infoTextView;
+    @ViewById(R.id.content_edit)
+    EditText editText;
 
     @Extra
     DateTime dateTime;
@@ -66,10 +71,19 @@ public class NewNoteActivity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save) {
+            saveData();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void saveData(){
+        Note note = new Note();
+        note.setContent(editText.getText().toString());
+        note.setCreateTime(dateTime.getMillis());
+        note.save();
+        Toast.makeText(this, "has saved!", Toast.LENGTH_SHORT).show();
     }
 
 
