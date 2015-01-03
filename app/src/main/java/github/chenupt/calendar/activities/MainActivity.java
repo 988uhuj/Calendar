@@ -2,18 +2,25 @@ package github.chenupt.calendar.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 
 import github.chenupt.calendar.R;
 import github.chenupt.calendar.fragments.DayListFragment_;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
+
+    @ViewById(R.id.tool_bar)
+    Toolbar toolbar;
+    @ViewById(R.id.drawer)
+    DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,17 +30,12 @@ public class MainActivity extends BaseActivity {
 
     @AfterViews
     void afterViews(){
-//        showProgress();
-//        show();
+        setSupportActionBar(toolbar);
+//        toolbar.setElevation(20f);
+        drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.common_text));
         Fragment fragment = DayListFragment_.builder().build();
         getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
     }
-
-    @UiThread(delay = 5000)
-    void show(){
-        showContent();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
