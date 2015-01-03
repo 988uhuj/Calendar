@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -32,7 +34,18 @@ public class MainActivity extends BaseActivity {
     void afterViews(){
         setSupportActionBar(toolbar);
 //        toolbar.setElevation(20f);
-        drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.common_text));
+        toolbar.setNavigationIcon(R.drawable.ic_menu);
+//        drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.common_text));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(drawerLayout.isDrawerVisible(Gravity.START)){
+                    drawerLayout.closeDrawer(Gravity.START);
+                }else{
+                    drawerLayout.openDrawer(Gravity.START);
+                }
+            }
+        });
         Fragment fragment = DayListFragment_.builder().build();
         getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
     }
