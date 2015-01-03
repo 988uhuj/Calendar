@@ -4,5 +4,6 @@
     <string name="app_name">Calendar</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="save">保存</string>
 
 </resources>
