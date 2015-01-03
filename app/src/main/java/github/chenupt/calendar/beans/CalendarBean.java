@@ -1,6 +1,7 @@
 package github.chenupt.calendar.beans;
 
 import org.androidannotations.annotations.EBean;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import github.chenupt.calendar.multiplemodel.ItemEntityCreator;
 import github.chenupt.calendar.multiplemodel.ModelFactory;
 import github.chenupt.calendar.multiplemodel.SimpleItemEntity;
 import github.chenupt.calendar.view.item.DayItemView_;
+import github.chenupt.calendar.view.item.MonthItemView_;
 
 /**
  * Created by chenupt@gmail.com on 2015/1/2.
@@ -17,15 +19,32 @@ import github.chenupt.calendar.view.item.DayItemView_;
 @EBean
 public class CalendarBean {
 
-    public ModelFactory getFactory(){
-        ModelFactory modelFactory = new ModelFactory.Builder().addModel(DayItemView_.class).build();
+    public ModelFactory getFactory() {
+        ModelFactory modelFactory = new ModelFactory.Builder()
+                .addModel(DayItemView_.class)
+                .addModel(MonthItemView_.class)
+                .build();
         return modelFactory;
     }
 
-    public List<SimpleItemEntity> getWrapperList(){
+    public List<SimpleItemEntity> getWrapperList(SimpleItemEntity<DateTime> lastEntity, boolean down) {
         List<SimpleItemEntity> resultList = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            ItemEntityCreator.create("").setModelView(DayItemView_.class).attach(resultList);
+        DateTime dateTime;
+        if (lastEntity == null) {
+            dateTime = DateTime.now();
+        } else {
+            DateTime lastDateTime = lastEntity.getContent();
+            if (down) {
+                dateTime = lastDateTime.plusMonths(1);
+            } else {
+                dateTime = lastDateTime.minusMonths(1);
+            }
+        }
+
+        int dayCount = dateTime.dayOfMonth().getMaximumValue();
+
+        for (int i = 0; i < dayCount; i++) {
+            ItemEntityCreator.create(dateTime.withDayOfMonth(i + 1)).setModelView(DayItemView_.class).attach(resultList);
         }
         return resultList;
     }

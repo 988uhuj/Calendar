@@ -52,7 +52,7 @@ public class DayListFragment extends BaseFragment {
             @Override
             public void onDownLoad() {
                 super.onDownLoad();
-                adapter.addList(calendarBean.getWrapperList());
+                adapter.addList(calendarBean.getWrapperList(adapter.getLastItem(), true));
                 adapter.notifyDataSetChanged();
                 listView.setOnLoadComplete();
             }
@@ -60,7 +60,7 @@ public class DayListFragment extends BaseFragment {
             @Override
             public void onUpLoad() {
                 super.onUpLoad();
-                List<SimpleItemEntity> wrapperList = calendarBean.getWrapperList();
+                List<SimpleItemEntity> wrapperList = calendarBean.getWrapperList(adapter.getFirstItem(), false);
                 // must call before add head data
                 int index = listView.getCurrentPosition(wrapperList.size());
                 int top = listView.getCurrentTop();
@@ -76,7 +76,7 @@ public class DayListFragment extends BaseFragment {
     }
 
     private void action(){
-        adapter.setList(calendarBean.getWrapperList());
+        adapter.setList(calendarBean.getWrapperList(adapter.getLastItem(), true));
         adapter.notifyDataSetChanged();
 //        show();
         showContent();

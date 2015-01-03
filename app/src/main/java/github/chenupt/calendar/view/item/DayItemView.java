@@ -14,7 +14,7 @@ import github.chenupt.calendar.R;
  * Description TODO
  */
 @EViewGroup(R.layout.view_item_day)
-public class DayItemView extends BaseItemView {
+public class DayItemView extends BaseItemView<DateTime> {
 
     @ViewById(R.id.day)
     TextView dayTextView;
@@ -25,6 +25,6 @@ public class DayItemView extends BaseItemView {
 
     @Override
     public void bindView() {
-        dayTextView.setText(DateTime.now().toString("yyyy-MM-dd") + " " + viewPosition);
+        dayTextView.setText(model.getContent().toString("yyyy-MM-dd") + " " + viewPosition);
     }
 }

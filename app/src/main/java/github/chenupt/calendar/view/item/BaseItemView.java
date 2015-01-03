@@ -9,7 +9,7 @@ import github.chenupt.calendar.multiplemodel.BaseItemModel;
  * Created by chenupt@gmail.com on 2015/1/2.
  * Description TODO
  */
-public abstract class BaseItemView extends BaseItemModel {
+public abstract class BaseItemView<T> extends BaseItemModel<T> {
 
     public BaseItemView(Context context) {
         super(context);
