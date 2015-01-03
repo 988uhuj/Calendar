@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -13,9 +12,13 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.List;
+
 import github.chenupt.calendar.R;
 import github.chenupt.calendar.beans.CalendarBean;
+import github.chenupt.calendar.multiplemodel.SimpleItemEntity;
 import github.chenupt.calendar.multiplemodel.SimpleModelAdapter;
+import github.chenupt.calendar.view.AutoLoadListView;
 
 /**
  * Created by chenupt@gmail.com on 2015/1/2.
@@ -25,7 +28,7 @@ import github.chenupt.calendar.multiplemodel.SimpleModelAdapter;
 public class DayListFragment extends BaseFragment {
 
     @ViewById(R.id.list_view)
-    ListView listView;
+    AutoLoadListView listView;
 
     @Bean
     CalendarBean calendarBean;
@@ -44,6 +47,31 @@ public class DayListFragment extends BaseFragment {
 
         adapter = new SimpleModelAdapter(getActivity(), calendarBean.getFactory());
         listView.setAdapter(adapter);
+        listView.setDirection(AutoLoadListView.Direction.ALL);
+        listView.setOnLoadListener(new AutoLoadListView.SimpleOnLoadListener(){
+            @Override
+            public void onDownLoad() {
+                super.onDownLoad();
+                adapter.addList(calendarBean.getWrapperList());
+                adapter.notifyDataSetChanged();
+                listView.setOnLoadComplete();
+            }
+
+            @Override
+            public void onUpLoad() {
+                super.onUpLoad();
+                List<SimpleItemEntity> wrapperList = calendarBean.getWrapperList();
+                // must call before add head data
+                int index = listView.getCurrentPosition(wrapperList.size());
+                int top = listView.getCurrentTop();
+
+                adapter.addListToHead(wrapperList);
+                adapter.notifyDataSetChanged();
+                listView.setSelectionFromTop(index, top);
+
+                listView.setOnLoadComplete();
+            }
+        });
         action();
     }
 

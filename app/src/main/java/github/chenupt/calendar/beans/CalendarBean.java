@@ -24,7 +24,7 @@ public class CalendarBean {
 
     public List<SimpleItemEntity> getWrapperList(){
         List<SimpleItemEntity> resultList = new ArrayList<>();
-        for (int i = 0; i < 21; i++) {
+        for (int i = 0; i < 20; i++) {
             ItemEntityCreator.create("").setModelView(DayItemView_.class).attach(resultList);
         }
         return resultList;
