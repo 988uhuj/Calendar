@@ -40,9 +40,8 @@ public class CalendarBean {
                 dateTime = lastDateTime.minusMonths(1);
             }
         }
-
+        ItemEntityCreator.create(dateTime).setModelView(MonthItemView_.class).attach(resultList);
         int dayCount = dateTime.dayOfMonth().getMaximumValue();
-
         for (int i = 0; i < dayCount; i++) {
             ItemEntityCreator.create(dateTime.withDayOfMonth(i + 1)).setModelView(DayItemView_.class).attach(resultList);
         }
