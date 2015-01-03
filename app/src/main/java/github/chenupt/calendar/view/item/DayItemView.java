@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 import org.joda.time.DateTime;
 
 import github.chenupt.calendar.R;
+import github.chenupt.calendar.activities.NewNoteActivity_;
 
 /**
  * Created by chenupt@gmail.com on 2015/1/2.
@@ -37,5 +39,10 @@ public class DayItemView extends BaseItemView<DateTime> {
         }
         contentTextView.setText("今天XXX身上的发送到k");
         dayTextView.setText(model.getContent().toString("EE d" + "日"));
+    }
+
+    @Click(R.id.container)
+    void containerClick(){
+        NewNoteActivity_.intent(getContext()).start();
     }
 }

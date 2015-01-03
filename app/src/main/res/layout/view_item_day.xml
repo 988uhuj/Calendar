@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,7 +17,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:text="周六 11日"
-            android:textColor="@color/common_text"
+            android:textColor="@color/common"
             android:textSize="16sp" />
 
         <TextView
@@ -26,7 +27,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="100dp"
             android:layout_marginRight="30dp"
-            android:background="@color/common_text"
+            android:background="@color/common"
             android:maxLines="2"
             android:padding="5dp"
             android:text="dsafdasdf"
@@ -39,7 +40,7 @@
         android:id="@+id/new_week"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/common_text"
+        android:background="@color/common"
         android:gravity="center"
         android:paddingLeft="3dp"
         android:paddingRight="3dp"
