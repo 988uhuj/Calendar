@@ -2,10 +2,13 @@ package github.chenupt.calendar.activities;
 
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.joda.time.DateTime;
 
 import github.chenupt.calendar.R;
 
@@ -18,10 +21,17 @@ public class NewNoteActivity extends BaseActivity {
 
     @ViewById(R.id.tool_bar)
     Toolbar toolbar;
+    @ViewById(R.id.info_text)
+    TextView infoTextView;
+
+    @Extra
+    DateTime dateTime;
 
     @AfterViews
     void afterViews(){
         initToolBar();
+
+        infoTextView.setText(dateTime.toString("yyyy / MM / dd"));
     }
 
     private void initToolBar(){
@@ -34,6 +44,7 @@ public class NewNoteActivity extends BaseActivity {
                 finish();
             }
         });
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setTitle("New Note");
     }
 

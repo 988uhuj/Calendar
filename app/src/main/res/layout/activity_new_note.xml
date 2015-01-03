@@ -8,4 +8,27 @@
         android:layout_height="wrap_content"
         android:background="@color/common"
         android:minHeight="?attr/actionBarSize" />
+    <TextView
+        android:id="@+id/info_text"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:text="2014 / 12 / 24"
+        android:textColor="@color/common"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@color/common"/>
+    <EditText
+        android:id="@+id/content_edit"
+        android:textSize="16sp"
+        android:gravity="top"
+        android:padding="10dp"
+        android:hint="今日的世界"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
