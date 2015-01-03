@@ -10,7 +10,7 @@ import github.chenupt.calendar.util.DebugLog;
 
 /**
  * Created by chenupt@gmail.com on 2015/1/3.
- * Description TODO
+ * Description : Auto load data when the listView attach top or bottom.
  */
 public class AutoLoadListView extends ListView {
 
