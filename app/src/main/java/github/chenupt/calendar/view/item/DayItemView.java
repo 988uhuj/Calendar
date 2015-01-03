@@ -1,6 +1,7 @@
 package github.chenupt.calendar.view.item;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.EViewGroup;
@@ -18,6 +19,10 @@ public class DayItemView extends BaseItemView<DateTime> {
 
     @ViewById(R.id.day)
     TextView dayTextView;
+    @ViewById(R.id.content)
+    TextView contentTextView;
+    @ViewById(R.id.new_week)
+    TextView newWeekTextView;
 
     public DayItemView(Context context) {
         super(context);
@@ -25,6 +30,12 @@ public class DayItemView extends BaseItemView<DateTime> {
 
     @Override
     public void bindView() {
-        dayTextView.setText(model.getContent().toString("yyyy-MM-dd") + " " + viewPosition);
+        if (model.getContent().getDayOfWeek() == 1) {
+            newWeekTextView.setVisibility(View.VISIBLE);
+        }else{
+            newWeekTextView.setVisibility(View.GONE);
+        }
+        contentTextView.setText("今天XXX身上的发送到k");
+        dayTextView.setText(model.getContent().toString("EE d" + "日"));
     }
 }

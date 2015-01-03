@@ -23,6 +23,7 @@ public class CalendarBean {
         ModelFactory modelFactory = new ModelFactory.Builder()
                 .addModel(DayItemView_.class)
                 .addModel(MonthItemView_.class)
+//                .addModel(WeekItemView_.class)
                 .build();
         return modelFactory;
     }
