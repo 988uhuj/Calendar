@@ -68,6 +68,9 @@ public class AutoLoadListView extends ListView {
             if (delegateOnScrollListener != null) {
                 delegateOnScrollListener.onScrollStateChanged(view, scrollState);
             }
+            if(!enableLoadMore){
+                return ;
+            }
         }
 
         @Override
@@ -75,11 +78,10 @@ public class AutoLoadListView extends ListView {
             if (delegateOnScrollListener != null) {
                 delegateOnScrollListener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
             }
+            if(!enableLoadMore){
+                return ;
+            }
             if (view != null && totalItemCount != 0 && !isLoading) {
-                DebugLog.d("firstVisibleItem:" + firstVisibleItem);
-                DebugLog.d("visibleItemCount:" + visibleItemCount);
-                DebugLog.d("totalItemCount:" + totalItemCount);
-                DebugLog.d("---");
                 if (direction == Direction.DOWN) {
                     attachBottom(firstVisibleItem, visibleItemCount, totalItemCount);
                 } else if (direction == Direction.UP) {

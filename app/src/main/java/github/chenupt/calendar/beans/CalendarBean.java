@@ -60,8 +60,8 @@ public class CalendarBean {
         }
 
         ItemEntityCreator.create(dateTime).setModelView(MonthItemView_.class).attach(resultList);
+        DateTime today = now.withTimeAtStartOfDay();
         for (int i = 0; i < dayCount; i++) {
-            DateTime today = now.withTimeAtStartOfDay();
             DateTime dateTimeTemp = dateTime.withDayOfMonth(i + 1);
             ItemEntityCreator.create(dateTimeTemp)
                     .setModelView(DayItemView_.class)
@@ -84,6 +84,17 @@ public class CalendarBean {
         }
     }
 
+    public SimpleItemEntity<DateTime> getTodayItem(List<SimpleItemEntity> list){
+        DateTime today = DateTime.now().withTimeAtStartOfDay();
+        for (SimpleItemEntity<DateTime> entity : list) {
+            if(entity.getModelView() == DayItemView_.class){
+                if(entity.getContent().getMillis() == today.getMillis()){
+                    return entity;
+                }
+            }
+        }
+        return null;
+    }
 
 
 }
