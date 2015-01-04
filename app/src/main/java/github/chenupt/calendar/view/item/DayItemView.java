@@ -11,6 +11,8 @@ import org.joda.time.DateTime;
 
 import github.chenupt.calendar.R;
 import github.chenupt.calendar.activities.NewNoteActivity_;
+import github.chenupt.calendar.persistance.Note;
+import github.chenupt.calendar.util.Constants;
 
 /**
  * Created by chenupt@gmail.com on 2015/1/2.
@@ -37,7 +39,11 @@ public class DayItemView extends BaseItemView<DateTime> {
         }else{
             newWeekTextView.setVisibility(View.GONE);
         }
-        contentTextView.setText("今天XXX身上的发送到k");
+        if(model.hasAttr(Constants.DEF_MAP_KEY.NOTE)){
+            contentTextView.setText(model.getAttr(Constants.DEF_MAP_KEY.NOTE, Note.class).getContent());
+        }else{
+            contentTextView.setText("empty");
+        }
         dayTextView.setText(model.getContent().toString("EE d" + "日"));
     }
 

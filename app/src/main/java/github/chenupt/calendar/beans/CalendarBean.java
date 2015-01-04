@@ -2,13 +2,18 @@ package github.chenupt.calendar.beans;
 
 import org.androidannotations.annotations.EBean;
 import org.joda.time.DateTime;
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import github.chenupt.calendar.multiplemodel.ItemEntityCreator;
 import github.chenupt.calendar.multiplemodel.ModelFactory;
 import github.chenupt.calendar.multiplemodel.SimpleItemEntity;
+import github.chenupt.calendar.persistance.Note;
+import github.chenupt.calendar.util.Constants;
 import github.chenupt.calendar.view.item.DayItemView_;
 import github.chenupt.calendar.view.item.MonthItemView_;
 
@@ -18,6 +23,8 @@ import github.chenupt.calendar.view.item.MonthItemView_;
  */
 @EBean
 public class CalendarBean {
+
+    private Map<Long, Note> map = new HashMap<>();
 
     public ModelFactory getFactory() {
         ModelFactory modelFactory = new ModelFactory.Builder()
@@ -33,7 +40,7 @@ public class CalendarBean {
         DateTime dateTime;
         if (lastEntity == null) {
             DateTime now = DateTime.now();
-            dateTime = new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 0, 0);
+            dateTime = new DateTime(now.getYear(), now.getMonthOfYear(), 1, 0, 0);
         } else {
             DateTime lastDateTime = lastEntity.getContent();
             if (down) {
@@ -42,10 +49,23 @@ public class CalendarBean {
                 dateTime = lastDateTime.minusMonths(1);
             }
         }
-        ItemEntityCreator.create(dateTime).setModelView(MonthItemView_.class).attach(resultList);
+
         int dayCount = dateTime.dayOfMonth().getMaximumValue();
+        // TODO get data
+        DateTime lastDateTime = new DateTime(dateTime.getYear(), dateTime.getMonthOfYear(), dayCount, 0, 1);
+
+        List<Note> notes = DataSupport.where("createtime between " + dateTime.getMillis() + " and " + lastDateTime.getMillis()).order("createtime").find(Note.class);
+        for (Note note : notes) {
+            map.put(note.getCreateTime(), note);
+        }
+
+        ItemEntityCreator.create(dateTime).setModelView(MonthItemView_.class).attach(resultList);
         for (int i = 0; i < dayCount; i++) {
-            ItemEntityCreator.create(dateTime.withDayOfMonth(i + 1)).setModelView(DayItemView_.class).attach(resultList);
+            DateTime dateTimeTemp = dateTime.withDayOfMonth(i + 1);
+            ItemEntityCreator.create(dateTimeTemp)
+                    .setModelView(DayItemView_.class)
+                    .addAttr(Constants.DEF_MAP_KEY.NOTE, map.get(dateTimeTemp.getMillis()))
+                    .attach(resultList);
         }
         return resultList;
     }
