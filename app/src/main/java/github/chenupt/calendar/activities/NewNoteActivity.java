@@ -82,6 +82,7 @@ public class NewNoteActivity extends BaseActivity {
     }
 
     private void checkData(){
+
     }
 
     private void saveData() {
@@ -101,6 +102,10 @@ public class NewNoteActivity extends BaseActivity {
         intent.putExtra(Constants.DEF_MAP_KEY.NOTE, note);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private void deleteData(){
+
     }
 
 

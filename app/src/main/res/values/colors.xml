@@ -2,4 +2,5 @@
 <resources>
     <color name="common">#009587</color>
     <color name="primary_dark">#388e3c</color>
+    <color name="blue">#4484f1</color>
 </resources>

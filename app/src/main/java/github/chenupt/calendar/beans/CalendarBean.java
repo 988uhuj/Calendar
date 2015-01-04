@@ -38,9 +38,9 @@ public class CalendarBean {
     public List<SimpleItemEntity> getWrapperList(SimpleItemEntity<DateTime> lastEntity, boolean down) {
         List<SimpleItemEntity> resultList = new ArrayList<>();
         DateTime dateTime;
+        DateTime now = DateTime.now();
         if (lastEntity == null) {
-            DateTime now = DateTime.now();
-            dateTime = new DateTime(now.getYear(), now.getMonthOfYear(), 1, 0, 0);
+            dateTime = now.withTimeAtStartOfDay();
         } else {
             DateTime lastDateTime = lastEntity.getContent();
             if (down) {
@@ -52,7 +52,7 @@ public class CalendarBean {
 
         int dayCount = dateTime.dayOfMonth().getMaximumValue();
         // TODO get data
-        DateTime lastDateTime = new DateTime(dateTime.getYear(), dateTime.getMonthOfYear(), dayCount, 0, 1);
+        DateTime lastDateTime = now.withDayOfMonth(dayCount).plusMillis(1);
 
         List<Note> notes = DataSupport.where("createtime between " + dateTime.getMillis() + " and " + lastDateTime.getMillis()).order("createtime").find(Note.class);
         for (Note note : notes) {
@@ -61,9 +61,11 @@ public class CalendarBean {
 
         ItemEntityCreator.create(dateTime).setModelView(MonthItemView_.class).attach(resultList);
         for (int i = 0; i < dayCount; i++) {
+            DateTime today = now.withTimeAtStartOfDay();
             DateTime dateTimeTemp = dateTime.withDayOfMonth(i + 1);
             ItemEntityCreator.create(dateTimeTemp)
                     .setModelView(DayItemView_.class)
+                    .setCheck(today.getMillis() == dateTimeTemp.getMillis())
                     .addAttr(Constants.DEF_MAP_KEY.NOTE, map.get(dateTimeTemp.getMillis()))
                     .attach(resultList);
         }
@@ -73,9 +75,11 @@ public class CalendarBean {
 
     public void updateList(List<SimpleItemEntity> list, DateTime dateTime, Note note){
         for (SimpleItemEntity<DateTime> entity : list) {
-            if (entity.getContent().getMillis() == dateTime.getMillis()) {
-                entity.addAttr(Constants.DEF_MAP_KEY.NOTE, note);
-                return ;
+            if(entity.getModelView() == DayItemView_.class){
+                if (entity.getContent().getMillis() == dateTime.getMillis()) {
+                    entity.addAttr(Constants.DEF_MAP_KEY.NOTE, note);
+                    return ;
+                }
             }
         }
     }

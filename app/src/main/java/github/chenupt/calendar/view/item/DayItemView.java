@@ -40,11 +40,20 @@ public class DayItemView extends BaseItemView<DateTime> {
             newWeekTextView.setVisibility(View.GONE);
         }
         if(model.hasAttr(Constants.DEF_MAP_KEY.NOTE)){
+            contentTextView.setVisibility(View.VISIBLE);
             contentTextView.setText(model.getAttr(Constants.DEF_MAP_KEY.NOTE, Note.class).getContent());
         }else{
-            contentTextView.setText("empty");
+            contentTextView.setText("");
+            contentTextView.setVisibility(View.INVISIBLE);
         }
         dayTextView.setText(model.getContent().toString("EE d" + "日"));
+
+
+        if(model.isCheck()){
+            dayTextView.setTextColor(getResources().getColor(R.color.blue));
+        }else{
+            dayTextView.setTextColor(getResources().getColor(R.color.common));
+        }
     }
 
     @Click(R.id.container)
