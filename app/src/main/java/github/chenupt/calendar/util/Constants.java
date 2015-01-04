@@ -8,6 +8,7 @@ public class Constants {
 
     public static class DEF_MAP_KEY {
         public static final String NOTE = "note";
+        public static final String DATETIME = "datetime";
     }
 
 }

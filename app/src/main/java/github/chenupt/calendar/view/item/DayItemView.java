@@ -49,6 +49,6 @@ public class DayItemView extends BaseItemView<DateTime> {
 
     @Click(R.id.container)
     void containerClick(){
-        NewNoteActivity_.intent(getContext()).note(model.getAttr(Constants.DEF_MAP_KEY.NOTE, Note.class)).dateTime(model.getContent()).start();
+        NewNoteActivity_.intent(getContext()).note(model.getAttr(Constants.DEF_MAP_KEY.NOTE, Note.class)).dateTime(model.getContent()).startForResult(0);
     }
 }

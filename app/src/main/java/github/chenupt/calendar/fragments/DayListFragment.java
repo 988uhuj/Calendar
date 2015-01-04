@@ -1,5 +1,7 @@
 package github.chenupt.calendar.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,8 +11,10 @@ import android.view.ViewGroup;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.joda.time.DateTime;
 
 import java.util.List;
 
@@ -18,6 +22,8 @@ import github.chenupt.calendar.R;
 import github.chenupt.calendar.beans.CalendarBean;
 import github.chenupt.calendar.multiplemodel.SimpleItemEntity;
 import github.chenupt.calendar.multiplemodel.SimpleModelAdapter;
+import github.chenupt.calendar.persistance.Note;
+import github.chenupt.calendar.util.Constants;
 import github.chenupt.calendar.view.AutoLoadListView;
 
 /**
@@ -85,7 +91,16 @@ public class DayListFragment extends BaseFragment {
     @UiThread(delay = 5000)
     void show(){
         showContent();
+    }
 
+    @OnActivityResult(0)
+    void newNoteResult(int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            DateTime dateTime = (DateTime) data.getSerializableExtra(Constants.DEF_MAP_KEY.DATETIME);
+            Note note = (Note) data.getSerializableExtra(Constants.DEF_MAP_KEY.NOTE);
+            calendarBean.updateList(adapter.getList(), dateTime, note);
+            adapter.notifyDataSetChanged();
+        }
     }
 
 }

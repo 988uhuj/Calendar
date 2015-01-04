@@ -71,4 +71,15 @@ public class CalendarBean {
     }
 
 
+    public void updateList(List<SimpleItemEntity> list, DateTime dateTime, Note note){
+        for (SimpleItemEntity<DateTime> entity : list) {
+            if (entity.getContent().getMillis() == dateTime.getMillis()) {
+                entity.addAttr(Constants.DEF_MAP_KEY.NOTE, note);
+                return ;
+            }
+        }
+    }
+
+
+
 }

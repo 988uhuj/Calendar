@@ -1,5 +1,6 @@
 package github.chenupt.calendar.activities;
 
+import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,12 +14,10 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 import org.joda.time.DateTime;
-import org.litepal.crud.DataSupport;
-
-import java.util.List;
 
 import github.chenupt.calendar.R;
 import github.chenupt.calendar.persistance.Note;
+import github.chenupt.calendar.util.Constants;
 
 /**
  * Created by chenupt@gmail.com on 2015/1/3.
@@ -42,17 +41,14 @@ public class NewNoteActivity extends BaseActivity {
     @AfterViews
     void afterViews() {
         initToolBar();
-        infoTextView.setText(dateTime.toString("yyyy / MM / dd"));
+        initView();
     }
 
-    private Note getNote() {
-        List<Note> notes = DataSupport.where("createtime = "
-                + dateTime.getMillis())
-                .find(Note.class);
-        if(notes.size() > 0) {
-            return notes.get(0);
+    private void initView(){
+        infoTextView.setText(dateTime.toString("yyyy / MM / dd"));
+        if(note != null){
+            editText.setText(note.getContent());
         }
-        return null;
     }
 
     private void initToolBar() {
@@ -99,6 +95,12 @@ public class NewNoteActivity extends BaseActivity {
             note.update(note.getId());
         }
         Toast.makeText(this, "has saved!", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent();
+        intent.putExtra(Constants.DEF_MAP_KEY.DATETIME, dateTime);
+        intent.putExtra(Constants.DEF_MAP_KEY.NOTE, note);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
 
