@@ -32,7 +32,8 @@ public class CalendarBean {
         List<SimpleItemEntity> resultList = new ArrayList<>();
         DateTime dateTime;
         if (lastEntity == null) {
-            dateTime = DateTime.now();
+            DateTime now = DateTime.now();
+            dateTime = new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 0, 0);
         } else {
             DateTime lastDateTime = lastEntity.getContent();
             if (down) {

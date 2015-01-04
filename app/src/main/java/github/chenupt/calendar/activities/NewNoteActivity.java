@@ -13,6 +13,9 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 import org.joda.time.DateTime;
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
 
 import github.chenupt.calendar.R;
 import github.chenupt.calendar.persistance.Note;
@@ -35,13 +38,22 @@ public class NewNoteActivity extends BaseActivity {
     DateTime dateTime;
 
     @AfterViews
-    void afterViews(){
+    void afterViews() {
         initToolBar();
-
         infoTextView.setText(dateTime.toString("yyyy / MM / dd"));
     }
 
-    private void initToolBar(){
+    private Note getNote() {
+        List<Note> notes = DataSupport.where("createtime = "
+                + dateTime.getMillis())
+                .find(Note.class);
+        if(notes.size() > 0) {
+            return notes.get(0);
+        }
+        return null;
+    }
+
+    private void initToolBar() {
         setSupportActionBar(toolbar);
 //        toolbar.setElevation(20f);
         toolbar.setNavigationIcon(R.drawable.ic_cancel_white);
@@ -57,32 +69,34 @@ public class NewNoteActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_new_note, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_save) {
             saveData();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    private void saveData(){
-        Note note = new Note();
-        note.setContent(editText.getText().toString());
-        note.setCreateTime(dateTime.getMillis());
-        note.save();
+    private void checkData(){
+    }
+
+    private void saveData() {
+        Note note = getNote();
+        if(note == null){
+            note = new Note();
+            note.setContent(editText.getText().toString());
+            note.setCreateTime(dateTime.getMillis());
+            note.save();
+        }else{
+            note.setContent(editText.getText().toString());
+            note.update(note.getId());
+        }
         Toast.makeText(this, "has saved!", Toast.LENGTH_SHORT).show();
     }
 
