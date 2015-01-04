@@ -1,7 +1,9 @@
 package github.chenupt.calendar.multiplemodel;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chenupt@gmail.com on 2014/8/13.
@@ -49,6 +51,11 @@ public class SimpleItemEntity<T> implements Serializable{
      * 设置单一项的tag，方便寻找到特定的item
      */
     private String tag = "";
+
+    /**
+     * 附件属性
+     */
+    private Map<String, Object> attrs;
 
     public SimpleItemEntity() {
         // 默认设置数据缓存时间为当前时间戳
@@ -162,6 +169,40 @@ public class SimpleItemEntity<T> implements Serializable{
     public SimpleItemEntity setTag(String tag) {
         this.tag = tag;
         return this;
+    }
+
+    public Map<String, Object> getAttrs() {
+        return attrs;
+    }
+
+    public SimpleItemEntity<T> setAttrs(Map<String, Object> attrs) {
+        this.attrs = attrs;
+        return this;
+    }
+
+    public SimpleItemEntity<T> addAttr(String key, Object value){
+        if(attrs == null){
+            attrs = new HashMap<String, Object>();
+        }
+        attrs.put(key, value);
+        return this;
+    }
+
+    public <T> T  getAttr(String key, Class<T> c){
+        if(attrs == null) {
+            return null;
+        }
+        return (T) attrs.get(key);
+    }
+
+    public boolean hasAttr(String key){
+        if(attrs == null){
+            return false;
+        }
+        if(attrs.get(key) == null){
+            return false;
+        }
+        return true;
     }
 
     public void attach(List<SimpleItemEntity> list){
