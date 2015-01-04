@@ -92,11 +92,17 @@ public class DayListFragment extends BaseFragment {
         List<SimpleItemEntity> lastMonth = calendarBean.getWrapperList(adapter.getFirstItem(), false);
         adapter.addListToHead(lastMonth);
         adapter.notifyDataSetChanged();
-        listView.setSelectionFromTop(lastMonth.size(), 0);
+        DebugLog.d("lastMonth" + lastMonth.size());
+        setSection(lastMonth.size());
         scrollToPosition();
     }
 
-    @UiThread(delay = 500)
+    @UiThread
+    void setSection(int index){
+        listView.setSelection(index);
+    }
+
+    @UiThread(delay = 1000)
     void scrollToPosition(){
         SimpleItemEntity entity = calendarBean.getTodayItem(adapter.getList());
         int index = adapter.getList().indexOf(entity);

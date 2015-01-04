@@ -5,6 +5,7 @@
 
     <github.chenupt.calendar.view.AutoLoadListView
         android:id="@+id/list_view"
+        android:dividerHeight="0.5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>
