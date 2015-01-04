@@ -14,6 +14,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 import org.joda.time.DateTime;
+import org.litepal.crud.DataSupport;
 
 import github.chenupt.calendar.R;
 import github.chenupt.calendar.persistance.Note;
@@ -44,9 +45,9 @@ public class NewNoteActivity extends BaseActivity {
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         infoTextView.setText(dateTime.toString("yyyy / MM / dd"));
-        if(note != null){
+        if (note != null) {
             editText.setText(note.getContent());
         }
     }
@@ -75,37 +76,52 @@ public class NewNoteActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_save) {
-            saveData();
+            dataAction();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void checkData(){
+    private void collectData() {
+        note.setContent(editText.getText().toString());
+        note.setCreateTime(dateTime.getMillis());
+    }
 
+    private void dataAction() {
+        saveData();
     }
 
     private void saveData() {
-        if(note == null){
+        if (note == null) {
             note = new Note();
-            note.setContent(editText.getText().toString());
-            note.setCreateTime(dateTime.getMillis());
+            collectData();
             note.save();
-        }else{
-            note.setContent(editText.getText().toString());
+        } else {
+            collectData();
             note.update(note.getId());
         }
-        Toast.makeText(this, "has saved!", Toast.LENGTH_SHORT).show();
 
+
+        resultBack();
+    }
+
+    private void deleteData() {
+        if (note != null) {
+            DataSupport.delete(Note.class, note.getId());
+            resultBack();
+        } else {
+            finish();
+        }
+
+    }
+
+    private void resultBack() {
+        Toast.makeText(this, "has saved!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent();
         intent.putExtra(Constants.DEF_MAP_KEY.DATETIME, dateTime);
         intent.putExtra(Constants.DEF_MAP_KEY.NOTE, note);
         setResult(RESULT_OK, intent);
         finish();
-    }
-
-    private void deleteData(){
-
     }
 
 
