@@ -36,6 +36,8 @@ public class NewNoteActivity extends BaseActivity {
 
     @Extra
     DateTime dateTime;
+    @Extra
+    Note note;
 
     @AfterViews
     void afterViews() {
@@ -87,7 +89,6 @@ public class NewNoteActivity extends BaseActivity {
     }
 
     private void saveData() {
-        Note note = getNote();
         if(note == null){
             note = new Note();
             note.setContent(editText.getText().toString());

@@ -2,11 +2,13 @@ package github.chenupt.calendar.persistance;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
+
 /**
  * Created by chenupt@gmail.com on 2015/1/3.
  * Description : Note entity
  */
-public class Note extends DataSupport {
+public class Note extends DataSupport implements Serializable{
 
     private long id;
     private String content;
