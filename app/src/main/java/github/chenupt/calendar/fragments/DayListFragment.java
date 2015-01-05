@@ -25,7 +25,6 @@ import github.chenupt.calendar.multiplemodel.SimpleModelAdapter;
 import github.chenupt.calendar.persistance.Note;
 import github.chenupt.calendar.util.Constants;
 import github.chenupt.calendar.util.DebugLog;
-import github.chenupt.calendar.util.ListScrollHelper;
 import github.chenupt.calendar.view.AutoLoadListView;
 
 /**
@@ -93,7 +92,7 @@ public class DayListFragment extends BaseFragment {
         adapter.addListToHead(lastMonth);
         adapter.notifyDataSetChanged();
         DebugLog.d("lastMonth" + lastMonth.size());
-        setSection(lastMonth.size());
+//        setSection(lastMonth.size());
         scrollToPosition();
     }
 
@@ -102,12 +101,13 @@ public class DayListFragment extends BaseFragment {
         listView.setSelection(index);
     }
 
-    @UiThread(delay = 1000)
+    @UiThread
     void scrollToPosition(){
         SimpleItemEntity entity = calendarBean.getTodayItem(adapter.getList());
         int index = adapter.getList().indexOf(entity);
         DebugLog.d("index" + index);
-        ListScrollHelper.smoothScrollToPositionFromTop(listView, index);
+        listView.setSelection(index);
+//        ListScrollHelper.smoothScrollToPositionFromTop(listView, index);
         listView.setEnableLoadMore(true);
     }
 

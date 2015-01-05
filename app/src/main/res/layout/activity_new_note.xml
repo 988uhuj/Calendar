@@ -27,6 +27,7 @@
         android:background="@color/common"/>
     <EditText
         android:id="@+id/content_edit"
+        android:background="@android:color/transparent"
         android:textSize="16sp"
         android:gravity="top"
         android:layout_margin="10dp"
