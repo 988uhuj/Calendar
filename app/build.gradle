@@ -20,6 +20,7 @@ android {
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         // 修改BuildConfig文件里的BUILD_TIME字段
         buildConfigField "String", "BUILD_TIME", "\"${buildTime()}\""
+        resValue "string", "app_name", "calendar"
     }
 
     signingConfigs {
@@ -33,6 +34,7 @@ android {
             minifyEnabled false
             versionNameSuffix "-debug"
             applicationIdSuffix ".debug"
+            resValue "string", "app_name", "debug-calendar"
         }
 
         test.initWith(buildTypes.debug)
@@ -43,6 +45,7 @@ android {
 
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
