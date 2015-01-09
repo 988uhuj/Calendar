@@ -1,42 +1,58 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
-def AAVersion = '3.2'
-def appId = 'github.chenupt.calendar'
-
-
 def buildTime() {
     return new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
 }
 
-def versionMajor = 0
-def versionMinor = 0
-def versionPatch = 1
-def versionBuild = 0 // bump for dogfood builds, public betas, etc.
-
-
+def buildCode() {
+    return Integer.parseInt(versionMajor) * 10000 + Integer.parseInt(versionMinor) * 1000 + Integer.parseInt(versionPatch) * 100 + Integer.parseInt(versionBuild);
+}
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion Integer.parseInt(project.compileSdkVersionNum)
+    buildToolsVersion project.buildToolsVersionNum
 
     defaultConfig {
-        applicationId appId
-        minSdkVersion 14
-        targetSdkVersion 21
-        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        applicationId defaultAppId
+        minSdkVersion project.minSdkVersionNum
+        targetSdkVersion project.targetSdkVersionNum
+        versionCode buildCode()
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         // 修改BuildConfig文件里的BUILD_TIME字段
         buildConfigField "String", "BUILD_TIME", "\"${buildTime()}\""
+        resValue "string", "app_name", "calendar"
     }
+
+    signingConfigs {
+        release {
+            // read from signing.properties
+        }
+    }
+
     buildTypes {
         debug {
             minifyEnabled false
-            versionNameSuffix "-debuggg"
+            versionNameSuffix "-debug"
+            applicationIdSuffix ".debug"
+            resValue "string", "app_name", "debug-calendar"
+        }
+
+        test.initWith(buildTypes.debug)
+        test {
+            versionNameSuffix "-test"
+            applicationIdSuffix ".test"
         }
 
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        preview.initWith(buildTypes.preview)
+        preview {
+            applicationIdSuffix ".preview"
         }
     }
 
@@ -69,21 +85,21 @@ dependencies {
     compile 'com.github.castorflex.smoothprogressbar:library-circular:1.0.2'
     compile 'com.fmsirvent:parallaxeverywhere:1.0.1'
 
-    apt "org.androidannotations:androidannotations:$AAVersion"
-    compile "org.androidannotations:androidannotations-api:$AAVersion"
+    apt "org.androidannotations:androidannotations:3.2"
+    compile "org.androidannotations:androidannotations-api:3.2"
 }
 
 apt {
     arguments {
         androidManifestFile variant.outputs[0].processResources.manifestFile
-        resourcePackageName appId
+        resourcePackageName defaultAppId
     }
 }
 
 
-
 File propFile = file('signing.properties');
 if (propFile.exists()) {
+    println 'load signing.properties'
     def Properties props = new Properties()
     props.load(new FileInputStream(propFile))
 
@@ -97,11 +113,12 @@ if (propFile.exists()) {
         android.buildTypes.release.signingConfig = null
     }
 } else {
+    println 'no key_store'
     android.buildTypes.release.signingConfig = null
 }
 
 
 task printProps << {
-    println arg
-    println versionss
+    println project.versionPatch
+    println code
 }
