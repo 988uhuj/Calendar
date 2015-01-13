@@ -20,12 +20,12 @@ import java.util.List;
 
 import github.chenupt.calendar.R;
 import github.chenupt.calendar.beans.CalendarBean;
-import github.chenupt.calendar.multiplemodel.SimpleItemEntity;
-import github.chenupt.calendar.multiplemodel.SimpleModelAdapter;
 import github.chenupt.calendar.persistance.Note;
 import github.chenupt.calendar.util.Constants;
 import github.chenupt.calendar.util.DebugLog;
 import github.chenupt.calendar.view.AutoLoadListView;
+import github.chenupt.multiplemodel.ItemEntity;
+import github.chenupt.multiplemodel.ModelListAdapter;
 
 /**
  * Created by chenupt@gmail.com on 2015/1/2.
@@ -40,7 +40,7 @@ public class DayListFragment extends BaseFragment {
     @Bean
     CalendarBean calendarBean;
 
-    private SimpleModelAdapter adapter;
+    private ModelListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class DayListFragment extends BaseFragment {
     void afterViews(){
         showProgress();
 
-        adapter = new SimpleModelAdapter(getActivity(), calendarBean.getFactory());
+        adapter = new ModelListAdapter(getActivity(), calendarBean.getFactory());
         listView.setAdapter(adapter);
         listView.setDirection(AutoLoadListView.Direction.ALL);
         listView.setOnLoadListener(new AutoLoadListView.SimpleOnLoadListener(){
@@ -69,7 +69,7 @@ public class DayListFragment extends BaseFragment {
             public void onUpLoad() {
                 super.onUpLoad();
                 DebugLog.d(adapter.getList().size() + "");
-                List<SimpleItemEntity> wrapperList = calendarBean.getWrapperList(adapter.getFirstItem(), false);
+                List<ItemEntity> wrapperList = calendarBean.getWrapperList(adapter.getFirstItem(), false);
                 // must call before add head data
                 int index = listView.getCurrentPosition(wrapperList.size());
                 int top = listView.getCurrentTop();
@@ -86,9 +86,9 @@ public class DayListFragment extends BaseFragment {
     private void action(){
         showContent();
         listView.setEnableLoadMore(false);
-        List<SimpleItemEntity> currentMonth = calendarBean.getWrapperList(adapter.getLastItem(), true);
+        List<ItemEntity> currentMonth = calendarBean.getWrapperList(adapter.getLastItem(), true);
         adapter.addList(currentMonth);
-        List<SimpleItemEntity> lastMonth = calendarBean.getWrapperList(adapter.getFirstItem(), false);
+        List<ItemEntity> lastMonth = calendarBean.getWrapperList(adapter.getFirstItem(), false);
         adapter.addListToHead(lastMonth);
         adapter.notifyDataSetChanged();
         DebugLog.d("lastMonth" + lastMonth.size());
@@ -103,7 +103,7 @@ public class DayListFragment extends BaseFragment {
 
     @UiThread
     void scrollToPosition(){
-        SimpleItemEntity entity = calendarBean.getTodayItem(adapter.getList());
+        ItemEntity entity = calendarBean.getTodayItem(adapter.getList());
         int index = adapter.getList().indexOf(entity);
         DebugLog.d("index" + index);
         listView.setSelection(index);
