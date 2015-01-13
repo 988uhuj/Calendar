@@ -6,11 +6,18 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="180dp"
         android:background="@color/common"
         android:minHeight="?attr/actionBarSize"
         app:theme="@style/ThemeOverlay.AppCompat.Dark"
-        />
+        android:elevation="10dp"
+        >
+        <TextView
+            android:text="2015 / 21"
+            android:gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v7.widget.Toolbar>
     <TextView
         android:visibility="gone"
         android:id="@+id/info_text"

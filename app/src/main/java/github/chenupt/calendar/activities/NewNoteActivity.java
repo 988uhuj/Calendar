@@ -62,8 +62,8 @@ public class NewNoteActivity extends BaseActivity {
                 finish();
             }
         });
-        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
-        getSupportActionBar().setTitle(dateTime.toString("yyyy / MM / dd"));
+//        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+//        getSupportActionBar().setTitle(dateTime.toString("yyyy / MM / dd"));
     }
 
     @Override
