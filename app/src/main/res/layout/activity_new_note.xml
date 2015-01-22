@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <android.support.v7.widget.Toolbar
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:background="@color/common"
         android:minHeight="?attr/actionBarSize"
         app:theme="@style/ThemeOverlay.AppCompat.Dark"
         android:elevation="10dp"
         >
-        <TextView
-            android:text="2015 / 21"
-            android:gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </android.support.v7.widget.Toolbar>
     <TextView
         android:visibility="gone"
@@ -24,7 +20,7 @@
         android:textSize="16sp"
         android:gravity="center"
         android:layout_margin="10dp"
-        android:text="2014 / 12 / 24"
+        tools:text="2014 / 12 / 24"
         android:textColor="@color/common"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
