@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -24,6 +25,7 @@ import github.chenupt.calendar.persistance.Note;
 import github.chenupt.calendar.util.Constants;
 import github.chenupt.calendar.util.DebugLog;
 import github.chenupt.calendar.view.AutoLoadListView;
+import github.chenupt.dragtoplayout.DragTopLayout;
 import github.chenupt.multiplemodel.ItemEntity;
 import github.chenupt.multiplemodel.ModelListAdapter;
 
@@ -36,6 +38,8 @@ public class DayListFragment extends BaseFragment {
 
     @ViewById(R.id.list_view)
     AutoLoadListView listView;
+    @ViewById(R.id.drag_layout)
+    DragTopLayout dragTopLayout;
 
     @Bean
     CalendarBean calendarBean;
@@ -48,13 +52,33 @@ public class DayListFragment extends BaseFragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    private void initDragLayout(){
+        DragTopLayout.from(getActivity()).setup(dragTopLayout);
+    }
+
     @AfterViews
     void afterViews(){
         showProgress();
+        initDragLayout();
 
         adapter = new ModelListAdapter(getActivity(), calendarBean.getFactory());
         listView.setAdapter(adapter);
         listView.setDirection(AutoLoadListView.Direction.ALL);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if(view.getChildCount() > 0 && view.getChildAt(0).getTop() <= 0){
+                    dragTopLayout.setTouchMode(false);
+                }else{
+                    dragTopLayout.setTouchMode(true);
+                }
+            }
+        });
         listView.setOnLoadListener(new AutoLoadListView.SimpleOnLoadListener(){
             @Override
             public void onDownLoad() {
