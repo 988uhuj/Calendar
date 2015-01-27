@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 import github.chenupt.calendar.R;
 import github.chenupt.calendar.activities.NewNoteActivity_;
 import github.chenupt.calendar.persistance.Note;
-import github.chenupt.calendar.util.Constants;
+import github.chenupt.calendar.utils.Constants;
 
 /**
  * Created by chenupt@gmail.com on 2015/1/2.

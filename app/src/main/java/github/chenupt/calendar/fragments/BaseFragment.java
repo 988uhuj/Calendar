@@ -11,7 +11,7 @@ import android.widget.TextView;
 import org.androidannotations.annotations.EFragment;
 
 import github.chenupt.calendar.R;
-import github.chenupt.calendar.util.LoadHandler;
+import github.chenupt.calendar.utils.LoadHandler;
 
 /**
  * Created by chenupt@gmail.com on 2015/1/2.

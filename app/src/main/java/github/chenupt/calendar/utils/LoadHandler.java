@@ -1,4 +1,4 @@
-package github.chenupt.calendar.util;
+package github.chenupt.calendar.utils;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;

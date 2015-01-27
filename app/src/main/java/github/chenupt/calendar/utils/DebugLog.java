@@ -9,7 +9,7 @@
  For more information, please refer to <http://unlicense.org/>
  */
 
-package github.chenupt.calendar.util;
+package github.chenupt.calendar.utils;
 
 import android.util.Log;
 

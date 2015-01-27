@@ -1,4 +1,4 @@
-package github.chenupt.calendar.util;
+package github.chenupt.calendar.utils;
 
 import android.os.Handler;
 import android.support.v4.view.ViewCompat;

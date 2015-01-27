@@ -9,6 +9,7 @@ import org.androidannotations.annotations.ViewById;
 import org.joda.time.DateTime;
 
 import github.chenupt.calendar.R;
+import github.chenupt.calendar.utils.Constants;
 
 /**
  * Created by chenupt@gmail.com on 2015/1/3.
@@ -29,5 +30,10 @@ public class MonthItemView extends BaseItemView<DateTime> {
     @Override
     public void bindView() {
         monthTextView.setText(model.getContent().toString("yyyy-MM"));
+        if (model.hasAttr(Constants.DEF_MAP_KEY.BG)) {
+            bgImageView.setImageResource(model.getAttr(Constants.DEF_MAP_KEY.BG, Integer.class));
+        }else{
+            bgImageView.setImageResource(0);
+        }
     }
 }

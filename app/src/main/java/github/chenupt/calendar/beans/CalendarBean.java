@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import github.chenupt.calendar.persistance.Note;
-import github.chenupt.calendar.util.Constants;
+import github.chenupt.calendar.utils.Constants;
 import github.chenupt.calendar.view.item.DayItemView_;
 import github.chenupt.calendar.view.item.MonthItemView_;
 import github.chenupt.multiplemodel.ItemEntity;
@@ -59,7 +59,12 @@ public class CalendarBean {
             map.put(note.getCreateTime(), note);
         }
 
-        ItemEntityCreator.create(dateTime).setModelView(MonthItemView_.class).attach(resultList);
+        // month
+        ItemEntityCreator.create(dateTime)
+                .setModelView(MonthItemView_.class)
+                .addAttr(Constants.DEF_MAP_KEY.BG, Constants.MONTH_BG_ARRAY[dateTime.getMonthOfYear()-1])
+                .attach(resultList);
+        // days
         DateTime today = now.withTimeAtStartOfDay();
         for (int i = 0; i < dayCount; i++) {
             DateTime dateTimeTemp = dateTime.withDayOfMonth(i + 1);
