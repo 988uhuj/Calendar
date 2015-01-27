@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -53,7 +52,23 @@ public class DayListFragment extends BaseFragment {
     }
 
     private void initDragLayout(){
-        DragTopLayout.from(getActivity()).setup(dragTopLayout);
+        DragTopLayout.from(getActivity())
+                .listener(new DragTopLayout.SimplePanelListener() {
+                    @Override
+                    public void onPanelStateChanged(DragTopLayout.PanelState panelState) {
+                        switch (panelState) {
+                            case COLLAPSED:
+                                dragTopLayout.setTouchMode(false);
+                                break;
+                            default:
+                                dragTopLayout.setTouchMode(true);
+                                break;
+                        }
+                        super.onPanelStateChanged(panelState);
+                    }
+                })
+                .setup(dragTopLayout);
+        dragTopLayout.setTouchMode(false);
     }
 
     @AfterViews
@@ -64,21 +79,6 @@ public class DayListFragment extends BaseFragment {
         adapter = new ModelListAdapter(getActivity(), calendarBean.getFactory());
         listView.setAdapter(adapter);
         listView.setDirection(AutoLoadListView.Direction.ALL);
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if(view.getChildCount() > 0 && view.getChildAt(0).getTop() <= 0 && !listView.isLoading()){
-                    dragTopLayout.setTouchMode(false);
-                }else{
-                    dragTopLayout.setTouchMode(true);
-                }
-            }
-        });
         listView.setOnLoadListener(new AutoLoadListView.SimpleOnLoadListener(){
             @Override
             public void onDownLoad() {
@@ -154,4 +154,7 @@ public class DayListFragment extends BaseFragment {
         }
     }
 
+    public void toggleTopView(){
+        dragTopLayout.toggleTopView();
+    }
 }

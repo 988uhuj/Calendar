@@ -8,8 +8,11 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -24,6 +27,13 @@ public class MainActivity extends BaseActivity {
     Toolbar toolbar;
     @ViewById(R.id.drawer)
     DrawerLayout drawerLayout;
+    @ViewById(R.id.toolbar_content)
+    View toolbarContent;
+    @ViewById(R.id.toolbar_text)
+    TextView toolbarTextView;
+    @ViewById(R.id.toolbar_arrow)
+    ImageView toolbarArrow;
+
     private DayListFragment dayListFragment;
 
     @Override
@@ -70,5 +80,10 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         dayListFragment.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Click(R.id.toolbar_content)
+    void toolbarContentClick(){
+        dayListFragment.toggleTopView();
     }
 }

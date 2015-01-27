@@ -23,6 +23,7 @@
             android:minHeight="?attr/actionBarSize"
             >
             <LinearLayout
+                android:id="@+id/toolbar_content"
                 android:paddingLeft="12dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
@@ -30,11 +31,13 @@
                 android:layout_height="match_parent"
                 android:minHeight="?attr/actionBarSize">
                 <TextView
+                    android:id="@+id/toolbar_text"
                     android:text="一月"
                     android:textSize="18sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageView
+                    android:id="@+id/toolbar_arrow"
                     android:src="@drawable/ic_arrow_down"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
