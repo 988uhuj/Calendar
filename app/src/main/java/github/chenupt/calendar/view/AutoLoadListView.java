@@ -127,6 +127,10 @@ public class AutoLoadListView extends ListView {
         isLoading = false;
     }
 
+    public boolean isLoading(){
+        return isLoading;
+    }
+
 
     public int getCurrentPosition(int listSize){
         return this.getFirstVisiblePosition() + listSize + getHeaderViewsCount();   // add header

@@ -72,7 +72,7 @@ public class DayListFragment extends BaseFragment {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if(view.getChildCount() > 0 && view.getChildAt(0).getTop() <= 0){
+                if(view.getChildCount() > 0 && view.getChildAt(0).getTop() <= 0 && !listView.isLoading()){
                     dragTopLayout.setTouchMode(false);
                 }else{
                     dragTopLayout.setTouchMode(true);
